@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Core Sign-In — MALEEK’s DATA</title> 
+    <!-- Boxicons & FontAwesome for dual elite framework icon rendering -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --brand-bg: #0b0914; /* Elite midnight nexus backdrop matching your identity logo profile */
+            --brand-lime: #a3e61d;
+            --brand-blue: #3b82f6;
+            --brand-pink: #ec4899;
+            --brand-gold: #f59e0b;
+            --text-primary: #ffffff;    
+            --text-muted: #94a3b8;      
+            --card-border: rgba(255, 255, 255, 0.05);
+            --input-border: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(11, 9, 20, 0.65);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--brand-bg);
+            background-image: radial-gradient(circle at 50% 50%, rgba(11, 9, 20, 0.4), var(--brand-bg)), url("{{ url_for('static', filename='b.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding: 24px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Glittering Ambient Laser Glows matching the core identity branding design */
+        .ambient-aurora-top {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            top: -15%;
+            right: -5%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0,0,0,0) 75%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .ambient-aurora-bottom {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            bottom: -10%;
+            left: -5%;
+            background: radial-gradient(circle, rgba(163, 230, 53, 0.08) 0%, rgba(0,0,0,0) 75%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* High-Definition Frosted Geometry Vault Card */
+        .form-container {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(18, 16, 32, 0.65);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border-radius: 24px;
+            padding: 50px 40px;
+            color: #ffffff;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.85),
+                        0 0 50px rgba(59, 130, 246, 0.02);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Continuous Glittering Vector Frame Trim */
+        .form-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, var(--brand-blue), var(--brand-pink), var(--brand-gold), var(--brand-lime));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        /* Custom Header Brand Architecture */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .brand-emblem-frame {
+            width: 56px;
+            height: 56px;
+            background: var(--brand-bg);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        
+        .brand-emblem-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 1.2px;
+            background: linear-gradient(to tr, var(--brand-lime), var(--brand-blue), var(--brand-pink));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .brand-emblem-frame span {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--brand-lime), var(--brand-blue), var(--brand-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+        }
+        
+        h1 .primary-accent { color: var(--brand-lime); }
+        h1 .secondary-accent { color: var(--brand-gold); font-weight: 400; }
+
+        .subtitle-spec {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* Advanced Data Field Slots */
+        .input-box {
+            position: relative;
+            width: 100%;
+            margin-bottom: 22px;
+        }
+
+        .field-tag-spec {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-box input {
+            width: 100%;
+            height: 52px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            font-size: 14px;
+            color: #ffffff;
+            padding: 0 50px 0 20px;
+            outline: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-box input:focus {
+            border-color: var(--brand-blue);
+            background: rgba(11, 9, 20, 0.85);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15),
+                        0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-box input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 13px;
+        }
+
+        .input-box i.action-vector {
+            position: absolute;
+            right: 20px;
+            top: 38px; /* Offset adjusted to perfectly account for upper meta label tags */
+            font-size: 18px;
+            color: var(--text-muted);
+            transition: color 0.25s ease;
+            pointer-events: none;
+        }
+
+        .input-box i.toggle-cipher-view {
+            position: absolute;
+            right: 20px;
+            top: 38px;
+            font-size: 16px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .input-box i.toggle-cipher-view:hover {
+            color: #ffffff;
+        }
+
+        .input-box input:focus ~ i.action-vector {
+            color: var(--brand-blue);
+        }
+
+        /* Utilities Controls Matrix */
+        .remember-forget {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 24px 0 28px;
+        }
+
+        .remember-forget label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-muted);
+            user-select: none;
+        }
+
+        .remember-forget label input {
+            accent-color: var(--brand-blue);
+            margin-right: 8px;
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+        }
+
+        .remember-forget a {
+            color: var(--brand-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .remember-forget a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        /* High-Performance Neon Luminous Submission Trigger */
+        .btn {
+            width: 100%;
+            height: 52px;
+            background: linear-gradient(135deg, var(--brand-blue), #2563eb);
+            border: none;
+            outline: none;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.3);
+            cursor: pointer;
+            font-size: 13px;
+            color: #ffffff;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(59, 130, 246, 0.45);
+            filter: brightness(1.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Navigation Tunnel Anchors */
+        .register-link {
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-muted);
+        }
+
+        .register-link p a {
+            color: var(--brand-lime);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease;
+            margin-left: 4px;
+        }
+
+        .register-link p a:hover {
+            color: #bef264;
+            text-decoration: underline;
+        }
+
+        /* Absolute Float Overlay Toast Alert Structures */
+        .flash-container {
+            position: absolute;
+            top: -75px;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+        
+        .alert {
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .alert.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+        }
+        
+        .alert.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Immersive Spatial Coordinates Layers -->
+    <div class="ambient-aurora-top"></div>
+    <div class="ambient-aurora-bottom"></div>
+
+    <div class="form-container">
+        
+        <!-- Alerts Context Shell -->
+        <div class="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}" id="loginToast">
+                            <i class="fa-solid {% if category == 'success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Master Core Brand Panel Header -->
+        <div class="brand-header">
+            <div class="brand-emblem-frame">
+                <span>M</span>
+            </div>
+            <h1><span class="primary-accent">MALEEK’s</span> <span class="secondary-accent">DATA</span></h1>
+            <p class="subtitle-spec">Authenticate Terminal Gateway</p>
+        </div>
+
+        <!-- Gateway Identity Authorization Form -->
+        <form action="/login" method="post" autocomplete="on">
+
+            <div class="input-box">
+                <label class="field-tag-spec">Identity Handle</label>
+                <!-- Matches "Username" exact backend form name context requirement from app.py -->
+                <input type="text" name="Username" placeholder="Enter merchant username" required autocomplete="username">
+                <i class='bx bxs-user action-vector'></i>
+            </div>
+
+            <div class="input-box">
+                <label class="field-tag-spec">Secure Cipher Key</label>
+                <!-- Matches "password" exact backend form name context requirement from app.py -->
+                <input type="password" name="password" id="loginCipher" placeholder="Enter session password" required autocomplete="current-password">
+                <i class="fa-regular fa-eye toggle-password toggle-cipher-view" id="loginCipherToggle"></i>
+            </div>
+
+            <div class="remember-forget">
+                <label><input type="checkbox" name="remember"> Keep node linked</label>
+                <a href="{{ url_for('forgot_password') }}">Recover Cipher?</a>
+            </div>
+
+            <button type="submit" class="btn">
+                <span>Initialize Core</span>
+                <i class="fa-solid fa-bolt-lightning"></i>
+            </button>
+
+            <div class="register-link">
+                <p>New operator segment? <a href="{{ url_for('register_page') }}">Deploy Node</a></p>
+            </div>
+            
+        </form>
+    </div>
+
+    <!-- Frontend Functional Automation Core -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Alert Toast Auto-Dismissal Lifecycle
+            const toast = document.getElementById('loginToast');
+            if (toast) {
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-10px)';
+                    toast.style.transition = 'all 0.3s ease';
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            }
+
+            // 2. Interactive Cipher Mask/Unmask Toggler
+            const toggleCipher = document.getElementById('loginCipherToggle');
+            const cipherField = document.getElementById('loginCipher');
+
+            toggleCipher.addEventListener('click', () => {
+                const isMasked = cipherField.getAttribute('type') === 'password';
+                cipherField.setAttribute('type', isMasked ? 'text' : 'password');
+                toggleCipher.classList.toggle('fa-eye');
+                toggleCipher.classList.toggle('fa-eye-slash');
+            });
+        });
+    </script>
+</body>
+</html>

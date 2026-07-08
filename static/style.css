@@ -1,0 +1,160 @@
+/* Reset margins and set the background */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url("b.jpg"); /* Since it's in the same folder */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* The Login Box */
+.login-container {
+    background: rgba(0, 0, 0, 0.75); /* Dark transparent background */
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.6);
+    color: white;
+    width: 300px;
+    text-align: center;
+}
+
+/* Styling the inputs */
+input {
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    outline: none;
+}
+
+/* Styling the button */
+button {
+    background: #03e9f4;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+button:hover {
+    background: #fff;
+    color: #03e9f4;
+}
+
+ .form{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+            font-size: smaller;
+        }
+
+        .body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: fit-content;
+            background:url(b.jpg) repeat;
+            background: cover;
+            
+        }
+        .form{
+            width: 420px;
+            background: purple;
+            color: #fff;
+            border-radius: 10px;
+            padding: 40px 30px;
+            margin-top: 20%;
+        }
+
+        .h1{
+            font-size: 36px;
+            text-align: center;
+        }
+
+        .input-box{
+
+            position: relative;
+            width: 100%;
+            height: 50px;
+            margin: 30px 0;
+        }
+
+        .input-box input{
+            width: 77%;
+            height: 50%;
+            background: transparent;
+            border: 2px solid rgba(255,255, 255, .2);
+            border-radius: 40px;
+            color: #fff;
+            padding: 20px 45px 20px;
+        }
+
+        .input-box input::placeholder {
+            color: #fff;
+        }
+
+        .input-box i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+
+        .remember-forget {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14,5px;
+            margin: -15 0 15px;
+        }
+
+        .remember-forget label input {
+            accent-color: #fff;
+            margin-right: 3px;
+        }
+
+        .remember-forget a:hover{
+            color: #fff;
+        }
+
+        .btn {
+            width: 100%;
+            height: 45px;
+            background: #fff;
+            border:none;
+            border-radius: 40px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, -1);
+            cursor: pointer;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .form .register-link {
+            font-size: 14.5px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-link p a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover{
+            text-decoration: underline;
+        }
+        

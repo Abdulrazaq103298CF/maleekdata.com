@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MALEEK’s DATA — Where Data Becomes Insight</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #0b0914; /* Deep premium midnight base matching image_9.png */
+            overflow-x: hidden;
+        }
+
+        /* Premium Dynamic Glow Backdrops mirroring the multi-colored 'M' logo */
+        .glow-sphere-1 {
+            background: radial-gradient(circle, rgba(163, 230, 53, 0.1) 0%, rgba(0,0,0,0) 70%);
+        }
+        .glow-sphere-2 {
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(0,0,0,0) 70%);
+        }
+        .glow-sphere-3 {
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.08) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        /* Glassmorphic Cards */
+        .glass-card {
+            background: rgba(18, 16, 32, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* Animated Custom Gradient Borders */
+        .premium-border-glow {
+            position: relative;
+        }
+        .premium-border-glow::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.5px;
+            background: linear-gradient(to bottom right, #a3e61d, #3b82f6, #ec4899, #f59e0b);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+        .premium-border-glow:hover::after {
+            opacity: 1;
+        }
+
+        /* Logo text matching image_9.png coloring */
+        .brand-lime { color: #a3e61d; }
+        .brand-gold { color: #f59e0b; }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen relative selection:bg-lime-500/30">
+
+    <!-- Ambient Grid & Glow Vectors -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f1d2c_1px,transparent_1px),linear-gradient(to_bottom,#1f1d2c_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 pointer-events-none z-0"></div>
+    <div class="absolute w-[600px] h-[600px] top-[-10%] left-[-5%] glow-sphere-1 rounded-full pointer-events-none z-0"></div>
+    <div class="absolute w-[700px] h-[700px] top-[20%] right-[-10%] glow-sphere-2 rounded-full pointer-events-none z-0"></div>
+    <div class="absolute w-[500px] h-[500px] bottom-[10%] left-[15%] glow-sphere-3 rounded-full pointer-events-none z-0"></div>
+
+    <!-- System Session Header Banner -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="fixed top-6 left-1/2 -translate-x-1/2 px-5 py-3.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 z-50 border shadow-2xl backdrop-blur-md transition-all duration-300
+            {% if category == 'success' %} bg-emerald-500/10 border-emerald-500/20 text-emerald-400 {% else %} bg-rose-500/10 border-rose-500/20 text-rose-400 {% endif %}">
+            <span class="w-2 h-2 rounded-full {% if category == 'success' %} bg-emerald-400 {% else %} bg-rose-400 {% endif %} animate-pulse"></span>
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Top Navigation Bar -->
+    <header class="w-full max-w-7xl mx-auto px-6 h-24 flex justify-between items-center relative z-10">
+        <div class="flex items-center gap-3">
+            <!-- Custom CSS Rendered Logo Shape Based on image_9.png Structure -->
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-lime-500 via-blue-500 to-pink-500 p-[1.5px] shadow-lg">
+                <div class="w-full h-full bg-[#0b0914] rounded-[10px] flex items-center justify-center font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 via-blue-400 to-pink-400 text-base">
+                    M
+                </div>
+            </div>
+            <div>
+                <span class="text-sm font-bold tracking-tight uppercase"><span class="brand-lime">MALEEK’s</span> <span class="brand-gold">DATA</span></span>
+                <p class="text-[9px] text-slate-500 uppercase tracking-widest font-semibold">Core Portal v2.4</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            {% if current_user.is_authenticated %}
+                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-blue-500/5 border border-blue-500/10 rounded-full text-[11px] font-semibold text-blue-400">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                    Operational Node: {{ user_details.username }}
+                </div>
+                <a href="/dashboard" class="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-blue-600/20">
+                    Control Desk <i class="fa-solid fa-arrow-right ml-1"></i>
+                </a>
+            {% else %}
+                <a href="/login" class="text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-white transition-colors px-4 py-2">
+                    Sign In
+                </a>
+                <a href="/register_page" class="px-5 py-2.5 bg-gradient-to-r from-lime-500 to-emerald-600 hover:from-lime-400 hover:to-emerald-500 text-slate-950 text-xs font-extrabold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-lime-500/10">
+                    Get Access Node
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Main Hero Workspace Section -->
+    <main class="w-full max-w-7xl mx-auto px-6 pt-12 md:pt-20 pb-24 relative z-10 flex flex-col items-center text-center">
+        
+        <!-- Big Premium Image Display Section directly invoking image_9.png layout philosophy -->
+        <div class="mb-10 relative group">
+            <div class="absolute inset-0 bg-gradient-to-tr from-lime-500 via-blue-500 to-pink-500 rounded-3xl blur-2xl opacity-25 group-hover:opacity-40 transition-opacity duration-500"></div>
+            <div class="w-28 h-28 md:w-36 md:h-36 rounded-3xl glass-card flex flex-col items-center justify-center border border-white/10 relative z-10 shadow-2xl transition-transform duration-500 group-hover:scale-105">
+                <!-- Multi-layer structural gradient emblem representation -->
+                <span class="text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-br from-lime-400 via-blue-400 to-pink-500 tracking-tighter">M</span>
+            </div>
+        </div>
+
+        <!-- System Branding Text Blocks -->
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight max-w-3xl leading-[1.15]">
+            <span class="brand-lime font-black tracking-wide">MALEEK’s</span> <span class="brand-gold font-light">DATA</span>
+        </h1>
+        <p class="mt-4 text-xs sm:text-sm font-semibold tracking-[0.25em] text-blue-400 uppercase opacity-90 max-w-xl">
+            WHERE DATA BECOMES INSIGHT
+        </p>
+        
+        <p class="mt-6 text-slate-400 text-xs sm:text-sm max-w-xl font-normal leading-relaxed">
+            Initialize direct API vectors to orchestrate instant telecommunication distributions. Process SME data bundles, airtime top-ups, and automated financial pipelines across secure merchant terminal nodes.
+        </p>
+
+        <!-- Dynamic Action Router Triggers -->
+        <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md">
+            {% if current_user.is_authenticated %}
+                <a href="/dashboard" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-blue-600/20 hover:-translate-y-0.5 active:translate-y-0 premium-border-glow">
+                    Enter Active Core Terminal
+                </a>
+            {% else %}
+                <a href="/register_page" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-lime-500 via-emerald-500 to-teal-500 text-slate-950 font-black text-xs uppercase tracking-widest rounded-xl transition-all shadow-xl shadow-lime-500/20 hover:-translate-y-0.5 active:translate-y-0">
+                    Deploy Merchant Account
+                </a>
+                <a href="/login" class="w-full sm:w-auto px-8 py-4 glass-card border border-slate-800 hover:border-slate-700 text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all hover:bg-slate-900/40 hover:-translate-y-0.5 active:translate-y-0">
+                    Secure Merchant Login
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Premium Feature Performance Vector Matrix -->
+        <section class="mt-24 w-full grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+            
+            <div class="glass-card premium-border-glow p-6 rounded-2xl space-y-4">
+                <div class="w-10 h-10 rounded-xl bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-lime-400">
+                    <i class="fa-solid fa-bolt text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Sub-Second Delivery</h3>
+                    <p class="mt-1 text-xs text-slate-400 leading-relaxed">Automated webhook pipelines deploy your communication payload allocations instantly upon ledger verification updates.</p>
+                </div>
+            </div>
+
+            <div class="glass-card premium-border-glow p-6 rounded-2xl space-y-4">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                    <i class="fa-solid fa-shield-halved text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Cryptographic Encapsulation</h3>
+                    <p class="mt-1 text-xs text-slate-400 leading-relaxed">Secure session handshakes protect every client transaction history registry to completely suppress payload spoofing.</p>
+                </div>
+            </div>
+
+            <div class="glass-card premium-border-glow p-6 rounded-2xl space-y-4">
+                <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400">
+                    <i class="fa-solid fa-chart-pie text-sm"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider">Insight Generation Matrix</h3>
+                    <p class="mt-1 text-xs text-slate-400 leading-relaxed">Raw operational statistics are continuously transformed into clean visual ledger logs to maximize transaction velocity oversight.</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Absolute Footing Architecture -->
+    <footer class="w-full border-t border-slate-900/60 bg-[#07050e]/80 backdrop-blur-xl py-6 relative z-10 text-center text-[10px] font-medium text-slate-500 tracking-wider uppercase">
+        &copy; 2026 MALEEK’s DATA. All Routing Assets Operational.
+    </footer>
+
+    <script>
+        // Dismiss alert notification badges automatically after execution
+        document.addEventListener('DOMContentLoaded', () => {
+            const alerts = document.querySelectorAll('.fixed.top-6');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 300);
+                }, 4000);
+            });
+        });
+    </script>
+</body>
+</html>

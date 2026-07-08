@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .F{
+            width: 350px;
+            margin-left: 530px;
+            margin-top: 200px;
+            padding: 40px;
+            color: red;
+            
+        }
+
+        .I{
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        .T{
+            resize: none;
+            
+        }
+        
+        .I, T{
+            
+            border-radius: 2px solid #ddd;
+        }
+        .I:focus, T:focus{
+            box-shadow: 0 0 4px rgba(255, 0, 0, o.5);
+            border-radius: 2px solid rgb(255, 0, 0);
+
+        }
+
+        ::placeholder{
+            color: red;
+            opacity: 1;
+            size: 20px;
+
+           
+        }
+
+        .h1{
+            width: 800px;
+            margin-bottom: 30px;
+            color: red;
+
+           
+        }
+
+        .body{
+            background: url(b.jpg);
+        }
+
+        .submit{
+            margin-left: 126px;
+            margin-top: 20px;
+            cursor: pointer;
+            padding-left: 30px;
+            padding-right: 30px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 7px;
+            background-color: rgb(15, 3, 3);
+            color: aquamarine;
+            border-color: yellow;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .password{
+
+            margin-top: 20px;
+        }
+
+       
+       .Number{
+        margin-bottom: 20px;
+       }
+
+       .select{
+        display: flex;
+        
+       }
+        
+        
+    </style>
+</head>
+<body class="body">
+    <form class="F">
+        <h1 class="h1">REGISTRATION FORM</h1>
+        NAME:<input class="I" type="text" name="name" placeholder="Write your name">
+        Email:<input class="I" type="email" name="email" placeholder="write your Email...!">
+        <div class="Number">
+        Phone Number:<input class="I" type="text" name="number" placeholder="Phone Number">
+    </div>
+
+    <div class="select">
+        <select class="gender">
+            <option value="gender">Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="other">other</option>
+            </select>
+
+        <select name="car">
+            <option value="none">None</option>
+            <option value="car1">Ford</option>
+            <option value="car1">Mercedes</option>
+            <option value="car1">Toyota</option>
+        </select>
+
+        <textarea class="T" name="message" placeholder="Write a Message....!"></textarea>
+    </div>
+        <div class="password">
+       PASSWORD:
+            <input class="I" type="password" name="PWD" placeholder="password">
+        </div>
+
+       <button class="submit">Submit</button>
+    </form>
+</body>
+</html>

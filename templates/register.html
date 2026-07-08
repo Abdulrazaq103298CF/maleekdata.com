@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy Merchant Node — MALEEK’s DATA</title>
+    <!-- FontAwesome for elite structural icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --brand-bg: #0b0914; /* Deep elite midnight backdrop from image_9.png */
+            --brand-lime: #a3e61d;
+            --brand-blue: #3b82f6;
+            --brand-pink: #ec4899;
+            --brand-gold: #f59e0b;
+            --text-primary: #ffffff;    
+            --text-muted: #94a3b8;      
+            --card-border: rgba(255, 255, 255, 0.05);
+            --input-border: rgba(255, 255, 255, 0.08);
+            --input-bg: rgba(11, 9, 20, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--brand-bg);
+            background-image: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.3), var(--brand-bg)), url("{{ url_for('static', filename='b.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding: 24px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Premium Glow Vectors matching image_9.png */
+        .ambient-glow-1 {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            top: -10%;
+            left: -5%;
+            background: radial-gradient(circle, rgba(163, 230, 53, 0.08) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .ambient-glow-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            bottom: -10%;
+            right: -5%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Razor-Sharp Frosted Glass Architecture */
+        .register-card {
+            background: rgba(18, 16, 32, 0.65); 
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            padding: 45px 35px;
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 
+                        0 0 50px rgba(163, 230, 53, 0.03);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Subtle multi-gradient animated border accent lines */
+        .register-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1.5px;
+            background: linear-gradient(135deg, var(--brand-lime), var(--brand-blue), var(--brand-pink), var(--brand-gold));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.35;
+        }
+
+        .brand-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .brand-logo-frame {
+            width: 56px;
+            height: 56px;
+            background: var(--brand-bg);
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        
+        .brand-logo-frame::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            padding: 1.2px;
+            background: linear-gradient(to tr, var(--brand-lime), var(--brand-blue), var(--brand-pink));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .brand-logo-frame span {
+            font-size: 26px;
+            font-weight: 900;
+            background: linear-gradient(to right, var(--brand-lime), var(--brand-blue), var(--brand-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+        }
+        
+        h2 .lime-part { color: var(--brand-lime); }
+        h2 .gold-part { color: var(--brand-gold); font-weight: 400; }
+
+        p.subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* Advanced Input System layout controls */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-label-spec {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i.vector-icon {
+            position: absolute;
+            left: 16px;
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: color 0.3s ease;
+            pointer-events: none;
+        }
+
+        .input-wrapper .toggle-password {
+            position: absolute;
+            right: 16px;
+            color: var(--text-muted);
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .input-wrapper .toggle-password:hover {
+            color: #ffffff;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px 14px 46px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 400;
+            outline: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        select {
+            cursor: pointer;
+            padding-right: 40px;
+        }
+
+        /* Custom dropdown arrow element override */
+        .select-container {
+            position: relative;
+            width: 100%;
+        }
+        .select-container::after {
+            content: '\f107';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        select option {
+            background: #121020;
+            color: #ffffff;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--brand-blue);
+            background: rgba(11, 9, 20, 0.85);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15),
+                        0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        input:focus + i.vector-icon, select:focus + i.vector-icon {
+            color: var(--brand-blue);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 13px;
+        }
+
+        /* Elite Strength Meter Functions */
+        .password-strength-container {
+            margin-top: 6px;
+            display: flex;
+            gap: 4px;
+            width: 100%;
+        }
+        .strength-bar {
+            height: 3px;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 99px;
+            transition: background 0.3s ease;
+        }
+
+        /* Premium Micro-Interactive Submit Vector */
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--brand-lime), #84cc16);
+            border: none;
+            border-radius: 12px;
+            color: #0b0914;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px -5px rgba(163, 230, 53, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px -5px rgba(163, 230, 53, 0.45);
+            filter: brightness(1.05);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+
+        .auth-footer a {
+            color: var(--brand-blue);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease;
+            margin-left: 4px;
+        }
+
+        .auth-footer a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        /* Top Bar Floating System Toast Alerts */
+        .flash-container {
+            position: absolute;
+            top: -75px;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+        .flash {
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .flash.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+        .flash.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Premium Dynamic Ambient Glow Elements -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <div class="register-card">
+        
+        <!-- Alerts Context Shell -->
+        <div class="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash {{ category }}" id="systemToast">
+                      <i class="fa-solid {% if category == 'success' %}fa-circle-check{% else %}fa-triangle-exclamation{% endif %}"></i>
+                      <span>{{ message }}</span>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- System Branding Section -->
+        <div class="brand-section">
+            <div class="brand-logo-frame">
+                <span>M</span>
+            </div>
+            <h2><span class="lime-part">MALEEK’s</span> <span class="gold-part">DATA</span></h2>
+            <p class="subtitle">Deploy Core Merchant Node Channel</p>
+        </div>
+
+        <!-- Registration Action Matrix -->
+        <form action="/register" method="POST" autocomplete="off">
+            
+            <div class="form-group">
+                <label class="input-label-spec">Legal Identity</label>
+                <div class="input-wrapper">
+                    <input type="text" name="regName" placeholder="Full Name" required autocomplete="name">
+                    <i class="fa-regular fa-id-card vector-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label-spec">Email Vector Pipeline</label>
+                <div class="input-wrapper">
+                    <input type="email" name="regEmail" placeholder="e.g., merchant@domain.com" required autocomplete="email">
+                    <i class="fa-regular fa-envelope vector-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label-spec">Merchant Username</label>
+                <div class="input-wrapper">
+                    <input type="text" name="regUser" placeholder="Unique username sequence" required autocomplete="username">
+                    <i class="fa-regular fa-user vector-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label-spec">Access Cipher Key</label>
+                <div class="input-wrapper">
+                    <input type="password" name="regPass" id="cipherInput" placeholder="Password minimum 8 elements" required autocomplete="new-password">
+                    <i class="fa-solid fa-lock vector-icon"></i>
+                    <i class="fa-regular fa-eye toggle-password" id="cipherVisibilityToggle"></i>
+                </div>
+                <!-- Dynamic Script Indicator Blocks -->
+                <div class="password-strength-container">
+                    <div class="strength-bar" id="bar1"></div>
+                    <div class="strength-bar" id="bar2"></div>
+                    <div class="strength-bar" id="bar3"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label-spec">Demographic Segment</label>
+                <div class="select-container">
+                    <div class="input-wrapper">
+                        <select name="regGender" required>
+                            <option value="" disabled selected>Select Segment Context</option>
+                            <option value="Male">Male Entity</option>
+                            <option value="Female">Female Entity</option>
+                        </select>
+                        <i class="fa-solid fa-venus-mars vector-icon"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit">
+                <span>Deploy Access Protocol</span>
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Already configured? <a href="/login">Initialize Session</a>
+        </div>
+    </div>
+
+    <!-- Elite Automation Script Blocks -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Alert Toast Auto-Dismissal Lifecycle
+            const toast = document.getElementById('systemToast');
+            if (toast) {
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-10px)';
+                    toast.style.transition = 'all 0.3s ease';
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            }
+
+            // 2. Interactive Cipher Visibility Engine
+            const togglePass = document.getElementById('cipherVisibilityToggle');
+            const passInput = document.getElementById('cipherInput');
+
+            togglePass.addEventListener('click', () => {
+                const isHidden = passInput.getAttribute('type') === 'password';
+                passInput.setAttribute('type', isHidden ? 'text' : 'password');
+                togglePass.classList.toggle('fa-eye');
+                togglePass.classList.toggle('fa-eye-slash');
+            });
+
+            // 3. Dynamic Real-Time Strength Meter Tracker
+            const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
+            passInput.addEventListener('input', (e) => {
+                const val = e.target.value;
+                
+                // Clear state
+                bars.forEach(b => b.style.background = 'rgba(255, 255, 255, 0.05)');
+                
+                if (val.length === 0) return;
+
+                if (val.length > 0 && val.length < 5) {
+                    bars[0].style.background = '#f87171'; // Weak (Red)
+                } else if (val.length >= 5 && val.length < 8) {
+                    bars[0].style.background = '#f59e0b'; // Moderate (Gold)
+                    bars[1].style.background = '#f59e0b';
+                } else if (val.length >= 8) {
+                    bars[0].style.background = '#a3e61d'; // Strong Node (Lime)
+                    bars[1].style.background = '#a3e61d';
+                    bars[2].style.background = '#a3e61d';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

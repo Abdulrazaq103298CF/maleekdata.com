@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MALEEK’s DATA — {{ user_details.username }}'s Control Desk</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0b0914; /* Deep premium midnight base matching registration & landing views */
+        }
+
+        /* Glassmorphic Panel Textures */
+        .glass-panel {
+            background: rgba(18, 16, 32, 0.6);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* Custom Animated Border Matrix Lines */
+        .premium-border-glow {
+            position: relative;
+        }
+        .premium-border-glow::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.5px;
+            background: linear-gradient(to bottom right, #a3e61d, #3b82f6, #ec4899, #f59e0b);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.35;
+            transition: opacity 0.3s ease;
+        }
+        .premium-border-glow:hover::after {
+            opacity: 0.85;
+        }
+
+        /* Smooth Micro-interactions */
+        .feature-grid-item {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .feature-grid-item:hover {
+            transform: translateY(-3px);
+            background: rgba(24, 21, 43, 0.8);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        .feature-grid-item:active {
+            transform: scale(0.97);
+        }
+
+        /* Dynamic Glow Blurs */
+        .glow-sphere {
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        /* Custom Scrollbar Cleanliness */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 99px;
+        }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen flex bg-[#0b0914] selection:bg-lime-500/30 overflow-x-hidden pb-20 md:pb-0 relative">
+
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f1d2c_1px,transparent_1px),linear-gradient(to_bottom,#1f1d2c_1px,transparent_1px)] bg-[size:5rem_5rem] opacity-10 pointer-events-none z-0"></div>
+    <div class="absolute w-[600px] h-[600px] top-0 left-1/4 glow-sphere rounded-full pointer-events-none z-0"></div>
+
+    {% if current_user.is_authenticated %}
+    <div id="toastNotification" class="fixed top-6 right-6 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold tracking-wider uppercase py-3.5 px-5 rounded-xl shadow-2xl backdrop-blur-md flex items-center gap-2.5 z-50 transition-opacity duration-300">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Secure Session Node Active</span>
+    </div>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div id="flashToast" class="fixed top-6 left-1/2 -translate-x-1/2 px-5 py-3.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 z-50 border shadow-2xl backdrop-blur-md transition-all duration-300
+            {% if category == 'success' %} bg-emerald-500/10 border-emerald-500/20 text-emerald-400 {% else %} bg-rose-500/10 border-rose-500/20 text-rose-400 {% endif %}">
+            <span class="w-2 h-2 rounded-full {% if category == 'success' %} bg-emerald-400 {% else %} bg-rose-400 {% endif %} animate-pulse"></span>
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <aside class="hidden md:flex flex-col justify-between w-68 border-r border-slate-900/80 bg-[#0d0b18]/60 backdrop-blur-xl p-6 h-screen sticky top-0 z-40">
+        <div class="space-y-10">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-lime-500 via-blue-500 to-pink-500 p-[1.5px] shadow-lg">
+                    <div class="w-full h-full bg-[#0b0914] rounded-[10px] flex items-center justify-center font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-lime-400 via-blue-400 to-pink-400 text-base">
+                        M
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-xs font-black text-white tracking-wider uppercase"><span class="text-lime-400">MALEEK’s</span> <span class="text-amber-500 font-normal">DATA</span></h1>
+                    <p class="text-[9px] text-slate-500 font-semibold uppercase tracking-widest">v2.4 Core Node</p>
+                </div>
+            </div>
+
+            <nav class="space-y-2">
+                <a href="#" class="flex items-center gap-3.5 px-4 py-3.5 bg-gradient-to-r from-blue-500/10 to-indigo-500/5 border border-blue-500/10 text-blue-400 rounded-xl font-bold text-[11px] tracking-wider uppercase transition-all">
+                    <i class="fa-solid fa-layer-group text-sm"></i>
+                    <span>Control Desk</span>
+                </a>
+                <a href="#" onclick="alert('Transaction Records Interface Active')" class="flex items-center gap-3.5 px-4 py-3.5 text-slate-400 hover:text-slate-200 hover:bg-slate-900/40 rounded-xl font-semibold text-[11px] tracking-wider uppercase transition-all border border-transparent hover:border-white/5">
+                    <i class="fa-solid fa-clock-rotate-left text-sm"></i>
+                    <span>Ledger History</span>
+                </a>
+            </nav>
+        </div>
+
+        <div>
+            <a href="/logout" class="flex items-center gap-3 px-4 py-3.5 text-rose-400 hover:bg-rose-500/5 rounded-xl font-bold text-[11px] tracking-wider uppercase border border-transparent hover:border-rose-500/10 transition-all">
+                <i class="fa-solid fa-power-off text-sm"></i>
+                <span>Disconnect Node</span>
+            </a>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-h-screen max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 z-10">
+        
+        <header class="flex justify-between items-center mb-8 pb-5 border-b border-slate-900/60">
+            <div>
+                <p class="text-[9px] text-slate-500 font-extrabold uppercase tracking-widest" id="timeGreeting">Initializing Platform System...</p>
+                <h2 class="text-xl font-extrabold text-white tracking-tight mt-0.5">Terminal Identity: <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400">{{ user_details.username }}</span></h2>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-lime-500/5 border border-lime-500/10 rounded-full text-[10px] font-bold uppercase tracking-wider text-lime-400">
+                    <span class="w-1.5 h-1.5 rounded-full bg-lime-400 animate-pulse"></span>
+                    API Gateway Sync
+                </div>
+                <button class="w-11 h-11 rounded-xl bg-slate-900/40 border border-slate-800/40 hover:border-slate-700 text-slate-400 hover:text-white transition-all flex items-center justify-center cursor-pointer relative shadow-inner">
+                    <i class="fa-regular fa-bell text-sm"></i>
+                    <span class="absolute top-3.5 right-3.5 w-1.5 h-1.5 rounded-full bg-pink-500"></span>
+                </button>
+            </div>
+        </header>
+
+        <main class="space-y-8 flex-1">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <div class="lg:col-span-2 w-full rounded-2xl bg-gradient-to-br from-[#121020] via-[#16122c] to-[#0d0918] p-6 border border-white/5 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[200px] premium-border-glow">
+                    <div class="absolute -right-6 -bottom-6 w-48 h-48 bg-lime-500/5 rounded-full pointer-events-none blur-2xl"></div>
+                    
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[9px] font-extrabold tracking-widest text-lime-400 uppercase">Merchant Capital Balance Matrix</span>
+                            <h3 class="text-xs text-slate-400 font-medium mt-1">Available Settlement Liquidity</h3>
+                        </div>
+                        <div class="flex items-center gap-4 text-slate-400">
+                            <button id="toggleBalanceBtn" class="hover:text-white transition-colors cursor-pointer text-sm" title="Mask Account View">
+                                <i class="fa-solid fa-eye" id="balanceIcon"></i>
+                            </button>
+                            <button onclick="window.location.reload();" class="hover:text-white transition-colors cursor-pointer text-sm" title="Synchronize Core Ledger">
+                                <i class="fa-solid fa-rotate text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="my-3">
+                        <div class="text-4xl sm:text-5xl font-black text-white tracking-tighter flex items-baseline gap-1" id="balanceWrapper" data-raw-balance="{{ user_details.balance }}">
+                            ₦{{ "{:,.2f}".format(user_details.balance) }}
+                        </div>
+                    </div>
+
+                    <div class="bg-black/30 rounded-xl px-4 py-3 flex items-center justify-between text-[11px] text-slate-400 border border-white/5">
+                        <div class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-shield-halved text-blue-400"></i>
+                            <span class="font-medium truncate">System Channel Pipeline: All API Elements Online</span>
+                        </div>
+                        <span class="text-lime-400 font-extrabold bg-lime-500/10 px-2 py-0.5 rounded text-[9px] uppercase tracking-wider">+2.4% velocity</span>
+                    </div>
+                </div>
+
+                <div class="w-full bg-[#121020]/60 border border-white/5 rounded-2xl p-6 flex flex-col justify-between min-h-[200px] relative">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-[9px] font-extrabold text-slate-500 tracking-widest uppercase">Inbound Node Address</span>
+                            <span class="text-[9px] font-extrabold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/10 uppercase tracking-wider">Instant</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-1">Assigned Clearing Account</p>
+                        <p class="text-2xl font-mono font-extrabold text-blue-400 tracking-wide" id="accNumText">{{ user_details.account_number }}</p>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-4 border-t border-slate-900 text-xs mt-4 gap-3">
+                        <div>
+                            <p class="font-extrabold text-slate-200 text-sm tracking-tight">{{ user_details.assigned_bank }}</p>
+                            <p class="text-slate-500 text-[10px] uppercase tracking-wider font-semibold">REF: {{ user_details.username.lower() }}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="copySettlementNumber()" class="px-3 py-2 bg-slate-900 border border-white/5 hover:border-slate-700 text-slate-300 hover:text-white rounded-xl text-[11px] font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-md">
+                                <i class="fa-regular fa-copy"></i>
+                                <span id="copyTextNode">Copy</span>
+                            </button>
+                            <button onclick="openFundingModal()" class="px-3 py-2 bg-gradient-to-r from-lime-500 to-lime-600 hover:from-lime-400 hover:to-lime-500 text-slate-950 rounded-xl text-[11px] font-extrabold flex items-center gap-1.5 transition-all cursor-pointer shadow-md">
+                                <i class="fa-solid fa-wallet"></i>
+                                <span>Fund</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="space-y-4 pt-4">
+                <div class="border-b border-slate-900/60 pb-3 flex items-center justify-between">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-500">Core Telecommunication Distribution Vectors</h3>
+                    <span class="text-[10px] text-slate-600 font-semibold uppercase tracking-wider">Direct Transaction Dispatches</span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    
+                    <button onclick="openVtuModal('Data Bundles')" class="feature-grid-item glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center gap-4 cursor-pointer group premium-border-glow">
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all shadow-lg shadow-blue-500/5">
+                            <i class="fa-solid fa-wifi text-base"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-xs font-bold text-slate-200 group-hover:text-white transition-colors uppercase tracking-wider">Data Bundle Vector</p>
+                            <p class="text-[10px] text-slate-500 group-hover:text-slate-400">SME & Direct API Channels</p>
+                        </div>
+                    </button>
+
+                    <button onclick="openVtuModal('Airtime TopUp')" class="feature-grid-item glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center gap-4 cursor-pointer group premium-border-glow">
+                        <div class="w-12 h-12 rounded-xl bg-lime-500/10 text-lime-400 flex items-center justify-center group-hover:bg-lime-500 group-hover:text-slate-950 transition-all shadow-lg shadow-lime-500/5">
+                            <i class="fa-solid fa-phone text-base"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-xs font-bold text-slate-200 group-hover:text-white transition-colors uppercase tracking-wider">Airtime Dispatch</p>
+                            <p class="text-[10px] text-slate-500 group-hover:text-slate-400">Instant Automated Discount</p>
+                        </div>
+                    </button>
+
+                    <button onclick="openVtuModal('Recharge Cards')" class="feature-grid-item glass-panel p-6 rounded-2xl flex flex-col items-center justify-center text-center gap-4 cursor-pointer group premium-border-glow">
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center group-hover:bg-pink-500 group-hover:text-white transition-all shadow-lg shadow-pink-500/5">
+                            <i class="fa-solid fa-barcode text-base"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-xs font-bold text-slate-200 group-hover:text-white transition-colors uppercase tracking-wider">Data PIN Cards</p>
+                            <p class="text-[10px] text-slate-500 group-hover:text-slate-400">Print Telemetry Scratch PINs</p>
+                        </div>
+                    </button>
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <nav class="md:hidden fixed bottom-0 inset-x-0 h-16 bg-[#0d0b18]/90 backdrop-blur-xl border-t border-slate-900 px-10 flex justify-between items-center z-40 shadow-2xl">
+        <a href="#" class="flex flex-col items-center gap-0.5 text-blue-400 text-center">
+            <i class="fa-solid fa-layer-group text-base"></i>
+            <span class="text-[9px] font-bold tracking-widest uppercase">Desk</span>
+        </a>
+        <a href="#" onclick="alert('Transaction Records Interface Active')" class="flex flex-col items-center gap-0.5 text-slate-500 hover:text-slate-300 text-center transition-colors">
+            <i class="fa-solid fa-clock-rotate-left text-base"></i>
+            <span class="text-[9px] font-semibold tracking-widest uppercase">History</span>
+        </a>
+        <a href="/logout" class="flex flex-col items-center gap-0.5 text-rose-500 hover:text-rose-400 text-center transition-colors">
+            <i class="fa-solid fa-power-off text-base"></i>
+            <span class="text-[9px] font-bold tracking-widest uppercase">Exit</span>
+        </a>
+    </nav>
+
+    <div id="vtuModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-200 p-4">
+        <div id="vtuModalCard" class="w-full max-w-md bg-[#121020] border border-white/5 p-7 rounded-2xl shadow-2xl relative transform scale-95 transition-transform duration-200">
+            <button onclick="closeVtuModal()" class="absolute top-4 right-4 w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white text-md flex items-center justify-center transition-colors cursor-pointer">&times;</button>
+            
+            <h3 id="modalTitle" class="text-base font-bold text-white mb-6 tracking-tight flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-nodes text-blue-400 text-sm"></i>
+                <span class="uppercase font-extrabold text-xs tracking-wider">Process Transaction Vector</span>
+            </h3>
+            
+            <form action="/process_vtu" method="POST" class="space-y-4">
+                <input type="hidden" name="serviceType" id="serviceType">
+                
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Network Routing Carrier</label>
+                    <select name="networkProvider" required class="w-full px-4 py-3.5 rounded-xl border border-slate-800/80 bg-slate-950 text-slate-200 text-xs outline-none focus:border-blue-500 transition-all">
+                        <option value="MTN">MTN Nigeria Telecom</option>
+                        <option value="AIRTEL">Airtel Networks Ltd</option>
+                        <option value="GLO">Globacom Commercial</option>
+                        <option value="9MOBILE">9Mobile EMTS Pipeline</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Recipient Target Identifier</label>
+                    <input type="tel" name="recipientNumber" placeholder="e.g., 08012345678" required
+                        class="w-full px-4 py-3.5 rounded-xl border border-slate-800/80 bg-slate-950 text-slate-100 text-xs outline-none focus:border-blue-500 transition-all">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Value Limit Target Amount (₦)</label>
+                    <input type="number" name="amount" placeholder="Minimum 50" min="50" required
+                        class="w-full px-4 py-3.5 rounded-xl border border-slate-800/80 bg-slate-950 text-slate-100 text-xs outline-none focus:border-blue-500 transition-all">
+                </div>
+
+                <button type="submit" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg shadow-blue-600/20 cursor-pointer mt-4">
+                    Dispatch Request API Packet
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="fundingModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-200 p-4">
+        <div id="fundingModalCard" class="w-full max-w-md bg-[#121020] border border-white/5 p-7 rounded-2xl shadow-2xl relative transform scale-95 transition-transform duration-200">
+            <button onclick="closeFundingModal()" class="absolute top-4 right-4 w-8 h-8 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white text-md flex items-center justify-center transition-colors cursor-pointer">&times;</button>
+            
+            <h3 class="text-sm font-black text-white mb-2 tracking-wider uppercase flex items-center gap-2">
+                <i class="fa-solid fa-building-columns text-lime-400 text-sm"></i>
+                <span>Direct Account Settlement Node</span>
+            </h3>
+            <p class="text-[11px] text-slate-400 mb-5 leading-relaxed">Simulate an inward automated bank credit request onto this node channel environment.</p>
+            
+            <form action="/process_vtu" method="POST" class="space-y-4" onsubmit="this.action='/process_vtu';">
+                <input type="hidden" name="serviceType" value="Direct Bank Funding Node Placement">
+                <input type="hidden" name="recipientNumber" value="Self Funding Event">
+                
+                <div class="space-y-1.5">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Transfer Amount Target (₦)</label>
+                    <input type="number" name="amount" placeholder="Enter transfer value, e.g. 5000" min="100" required
+                        class="w-full px-4 py-3.5 rounded-xl border border-slate-800/80 bg-slate-950 text-slate-100 text-xs outline-none focus:border-blue-500 transition-all">
+                </div>
+
+                <div class="p-3.5 bg-black/40 border border-slate-800/60 rounded-xl text-[11px] text-slate-400 space-y-1">
+                    <p class="font-bold text-slate-300">Simulated Pipeline Execution:</p>
+                    <p>Submitting triggers a virtual mock settlement partner webhook alert to simulate live database adjustments.</p>
+                </div>
+
+                <button type="button" onclick="alert('Inbound transfer simulated successfully! Add an endpoint in app.py matching this payload structure to credit the database dynamically.'); closeFundingModal();" class="w-full py-4 bg-gradient-to-r from-lime-500 to-emerald-600 hover:from-lime-400 hover:to-emerald-500 text-slate-950 font-black text-xs tracking-widest uppercase rounded-xl transition-all shadow-lg shadow-lime-500/10 cursor-pointer mt-2">
+                    Execute Inbound Settlement Payload
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Toast Notification Dismissal
+            const toast = document.getElementById('toastNotification');
+            if (toast) {
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 300);
+                }, 4000);
+            }
+            
+            const flashToast = document.getElementById('flashToast');
+            if (flashToast) {
+                setTimeout(() => {
+                    flashToast.style.opacity = '0';
+                    setTimeout(() => flashToast.remove(), 300);
+                }, 4000);
+            }
+
+            // 2. Automated Smart Clock Messages
+            const currentHour = new Date().getHours();
+            const timeGreeting = document.getElementById('timeGreeting');
+            if (currentHour < 12) timeGreeting.innerText = "Good Morning ☀️ Operations Desk Loaded";
+            else if (currentHour < 17) timeGreeting.innerText = "Good Afternoon 👋 Active Terminal Session";
+            else timeGreeting.innerText = "Good Evening 🌙 Security Monitoring Node Active";
+
+            // 3. Mask Balance Core Security Logic
+            const toggleBtn = document.getElementById('toggleBalanceBtn');
+            const balanceWrapper = document.getElementById('balanceWrapper');
+            const balanceIcon = document.getElementById('balanceIcon');
+            let balanceHidden = false;
+
+            const originalBalance = balanceWrapper.innerText.trim();
+
+            toggleBtn.addEventListener('click', () => {
+                balanceHidden = !balanceHidden;
+                if (balanceHidden) {
+                    balanceWrapper.innerText = "••••••••";
+                    balanceIcon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    balanceWrapper.innerText = originalBalance;
+                    balanceIcon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        });
+
+        // 4. Copy Account Number Methods
+        function copySettlementNumber() {
+            const numStr = document.getElementById('accNumText').innerText.trim();
+            const labelNode = document.getElementById('copyTextNode');
+            
+            navigator.clipboard.writeText(numStr).then(() => {
+                labelNode.innerText = "Copied!";
+                labelNode.classList.add('text-lime-400');
+                setTimeout(() => {
+                    labelNode.innerText = "Copy";
+                    labelNode.classList.remove('text-lime-400');
+                }, 2000);
+            });
+        }
+
+        // 5. VTU Modal Controls
+        const vtuModal = document.getElementById('vtuModal');
+        const vtuModalCard = document.getElementById('vtuModalCard');
+
+        function openVtuModal(type) {
+            document.getElementById('modalTitle').querySelector('span').innerText = 'Process ' + type;
+            document.getElementById('serviceType').value = type;
+            
+            vtuModal.classList.remove('opacity-0', 'pointer-events-none');
+            vtuModalCard.classList.remove('scale-95');
+        }
+
+        function closeVtuModal() {
+            vtuModal.classList.add('opacity-0', 'pointer-events-none');
+            vtuModalCard.classList.add('scale-95');
+        }
+
+        // 6. Funding Modal Controls
+        const fundingModal = document.getElementById('fundingModal');
+        const fundingModalCard = document.getElementById('fundingModalCard');
+
+        function openFundingModal() {
+            fundingModal.classList.remove('opacity-0', 'pointer-events-none');
+            fundingModalCard.classList.remove('scale-95');
+        }
+
+        function closeFundingModal() {
+            fundingModal.classList.add('opacity-0', 'pointer-events-none');
+            fundingModalCard.classList.add('scale-95');
+        }
+
+        // Global Backdrop Dismissal
+        window.addEventListener('click', (e) => {
+            if (e.target === vtuModal) closeVtuModal();
+            if (e.target === fundingModal) closeFundingModal();
+        });
+    </script>
+</body>
+</html>
