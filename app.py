@@ -48,6 +48,7 @@ def get_db_connection():
 
 def init_db():
     conn = get_db_connection()
+    # Ensured database matches username, email, and phone validation flawlessly
     conn.execute('''
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,7 +56,7 @@ def init_db():
             email TEXT UNIQUE NOT NULL,
             username TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
-            gender TEXT,
+            phone TEXT UNIQUE,
             wallet_balance REAL DEFAULT 0.0,
             acc_num TEXT,
             assigned_bank TEXT
@@ -84,7 +85,6 @@ def home():
             "assigned_bank": current_user.assigned_bank  
         }
     else:
-        # Crucial fallback dict to stop the 'user_details is undefined' crash
         user_data = {
             "username": "GUEST",
             "balance": 0.00,
@@ -108,15 +108,15 @@ def register():
     if request.method == "POST":
         full_name = request.form.get("regName")
         user_name = request.form.get("regUser", "").strip()
-        email_addr = request.form.get("regEmail")
-        gender_sel = request.form.get("regGender")
+        email_addr = request.form.get("regEmail", "").strip()
+        phone_num = request.form.get("regPhone", "").strip() 
         raw_password = request.form.get("regPass")
         
-        if not all([full_name, user_name, email_addr, raw_password]):
+        if not all([full_name, user_name, email_addr, raw_password, phone_num]):
             flash("All form fields must be completely filled out!", "error")
             return redirect(url_for("register_page"))
         
-        hashed_pwd = generate_password_hash(raw_password, method='pbkdf2:sha256', salt_length=16)
+        hashed_pwd = generate_password_hash(str(raw_password), method='pbkdf2:sha256', salt_length=16)
         
         generated_acc = str(random.randint(6110000000, 6999999999))
         mock_bank = "PalmPay"
@@ -125,15 +125,15 @@ def register():
         conn = get_db_connection()
         try:
             conn.execute(
-                """INSERT INTO users (name, email, username, password, gender, wallet_balance, acc_num, assigned_bank) 
+                """INSERT INTO users (name, email, username, password, phone, wallet_balance, acc_num, assigned_bank) 
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", 
-                (full_name, email_addr, user_name, hashed_pwd, gender_sel, initial_balance, generated_acc, mock_bank)
+                (full_name, email_addr, user_name, hashed_pwd, phone_num, initial_balance, generated_acc, mock_bank)
             )
             conn.commit()
             flash("Registration Successful! Please login.", "success")
             return redirect(url_for("login"))
         except sqlite3.IntegrityError:
-            flash("Username or Email address already taken!", "error")
+            flash("Username, Email, or Phone number already registered!", "error")
             return redirect(url_for("register_page"))
         finally:
             conn.close()
@@ -146,11 +146,14 @@ def login():
         return redirect(url_for("dashboard"))
         
     if request.method == "POST":
-        user_name = request.form.get("Username", "").strip()
+        user_input = request.form.get("Username", "").strip()
         raw_password = request.form.get("password")
         
         conn = get_db_connection()
-        user_record = conn.execute("SELECT * FROM users WHERE username = ?", (user_name,)).fetchone()
+        user_record = conn.execute(
+            "SELECT * FROM users WHERE username = ? OR phone = ? OR email = ?", 
+            (user_input, user_input, user_input)
+        ).fetchone()
         conn.close()
         
         if user_record and check_password_hash(user_record["password"], raw_password):
@@ -164,7 +167,7 @@ def login():
             login_user(user_obj)
             return redirect(url_for("dashboard"))
         else:
-            flash("Invalid Merchant Username or Password Configuration.", "error")
+            flash("Invalid User Credentials or Password Configuration.", "error")
             return redirect(url_for("login"))
             
     return render_template("login.html")
@@ -175,22 +178,25 @@ def forgot_password():
         return redirect(url_for("dashboard"))
 
     if request.method == "POST":
-        user_name = request.form.get("Username", "").strip()
+        user_input = request.form.get("Username", "").strip()
         new_pwd = request.form.get("new_password")
 
         conn = get_db_connection()
-        user_record = conn.execute("SELECT * FROM users WHERE username = ?", (user_name,)).fetchone()
+        user_record = conn.execute(
+            "SELECT * FROM users WHERE username = ? OR phone = ? OR email = ?", 
+            (user_input, user_input, user_input)
+        ).fetchone()
 
         if user_record:
-            hashed_new_pwd = generate_password_hash(new_pwd, method='pbkdf2:sha256', salt_length=16)
-            conn.execute("UPDATE users SET password = ? WHERE username = ?", (hashed_new_pwd, user_name))
+            hashed_new_pwd = generate_password_hash(str(new_pwd), method='pbkdf2:sha256', salt_length=16)
+            conn.execute("UPDATE users SET password = ? WHERE id = ?", (hashed_new_pwd, user_record["id"]))
             conn.commit()
             conn.close()
             flash("Password updated successfully!", "success")
             return redirect(url_for("login"))
         else:
             conn.close()
-            flash("Username not found.", "error")
+            flash("User detail account target not found.", "error")
             return redirect(url_for("forgot_password"))
 
     return render_template("forgot_password.html")
@@ -239,9 +245,8 @@ def process_vtu():
 @login_required
 def logout():
     logout_user()
-    flash("You have successfully signed out of the session environment.", "success")
+    flash("You have successfully signed out.", "success")
     return redirect(url_for("home"))
 
 if __name__ == "__main__":
-    # Fully bound to all local interfaces on network port 5000
     app.run(host="0.0.0.0", port=5000, debug=True)

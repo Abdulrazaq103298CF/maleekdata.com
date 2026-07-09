@@ -3,14 +3,13 @@
 <head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deploy Merchant Node — MALEEK’s DATA</title>
-    <!-- FontAwesome for elite structural icons -->
+    <title>Register — MALEEK’s DATA</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
         :root {
-            --brand-bg: #0b0914; /* Deep elite midnight backdrop from image_9.png */
+            --brand-bg: #0b0914; 
             --brand-lime: #a3e61d;
             --brand-blue: #3b82f6;
             --brand-pink: #ec4899;
@@ -45,7 +44,6 @@
             position: relative;
         }
 
-        /* Ambient Premium Glow Vectors matching image_9.png */
         .ambient-glow-1 {
             position: absolute;
             width: 450px;
@@ -67,7 +65,6 @@
             z-index: 0;
         }
 
-        /* Razor-Sharp Frosted Glass Architecture */
         .register-card {
             background: rgba(18, 16, 32, 0.65); 
             backdrop-filter: blur(24px) saturate(200%);
@@ -83,7 +80,6 @@
             z-index: 10;
         }
 
-        /* Subtle multi-gradient animated border accent lines */
         .register-card::before {
             content: '';
             position: absolute;
@@ -156,7 +152,6 @@
             font-weight: 600;
         }
 
-        /* Advanced Input System layout controls */
         .form-group {
             margin-bottom: 20px;
             position: relative;
@@ -199,7 +194,7 @@
             color: #ffffff;
         }
 
-        input, select {
+        input {
             width: 100%;
             padding: 14px 16px 14px 46px;
             background: var(--input-bg);
@@ -210,46 +205,16 @@
             font-weight: 400;
             outline: none;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            appearance: none;
-            -webkit-appearance: none;
         }
 
-        select {
-            cursor: pointer;
-            padding-right: 40px;
-        }
-
-        /* Custom dropdown arrow element override */
-        .select-container {
-            position: relative;
-            width: 100%;
-        }
-        .select-container::after {
-            content: '\f107';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 12px;
-            pointer-events: none;
-        }
-
-        select option {
-            background: #121020;
-            color: #ffffff;
-        }
-
-        input:focus, select:focus {
+        input:focus {
             border-color: var(--brand-blue);
             background: rgba(11, 9, 20, 0.85);
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15),
                         0 0 20px rgba(59, 130, 246, 0.1);
         }
 
-        input:focus + i.vector-icon, select:focus + i.vector-icon {
+        input:focus + i.vector-icon {
             color: var(--brand-blue);
         }
 
@@ -258,7 +223,6 @@
             font-size: 13px;
         }
 
-        /* Elite Strength Meter Functions */
         .password-strength-container {
             margin-top: 6px;
             display: flex;
@@ -273,7 +237,16 @@
             transition: background 0.3s ease;
         }
 
-        /* Premium Micro-Interactive Submit Vector */
+        .password-mismatch-error {
+            color: #f87171;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 6px;
+            display: none;
+            align-items: center;
+            gap: 4px;
+        }
+
         button {
             width: 100%;
             padding: 15px;
@@ -301,7 +274,15 @@
             filter: brightness(1.05);
         }
 
-        button:active {
+        button:disabled {
+            background: #334155;
+            color: #64748b;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        button:active:not(:disabled) {
             transform: translateY(0);
         }
 
@@ -327,7 +308,6 @@
             text-decoration: underline;
         }
 
-        /* Top Bar Floating System Toast Alerts */
         .flash-container {
             position: absolute;
             top: -75px;
@@ -365,13 +345,11 @@
 </head>
 
 <body>
-    <!-- Premium Dynamic Ambient Glow Elements -->
     <div class="ambient-glow-1"></div>
     <div class="ambient-glow-2"></div>
 
     <div class="register-card">
         
-        <!-- Alerts Context Shell -->
         <div class="flash-container">
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
@@ -385,20 +363,18 @@
             {% endwith %}
         </div>
 
-        <!-- System Branding Section -->
         <div class="brand-section">
             <div class="brand-logo-frame">
                 <span>M</span>
             </div>
             <h2><span class="lime-part">MALEEK’s</span> <span class="gold-part">DATA</span></h2>
-            <p class="subtitle">Deploy Core Merchant Node Channel</p>
+            <p class="subtitle">Create Your Account</p>
         </div>
 
-        <!-- Registration Action Matrix -->
-        <form action="/register" method="POST" autocomplete="off">
+        <form id="registrationForm" action="/register" method="POST" autocomplete="off">
             
             <div class="form-group">
-                <label class="input-label-spec">Legal Identity</label>
+                <label class="input-label-spec">Full Name</label>
                 <div class="input-wrapper">
                     <input type="text" name="regName" placeholder="Full Name" required autocomplete="name">
                     <i class="fa-regular fa-id-card vector-icon"></i>
@@ -406,29 +382,28 @@
             </div>
 
             <div class="form-group">
-                <label class="input-label-spec">Email Vector Pipeline</label>
+                <label class="input-label-spec">Email</label>
                 <div class="input-wrapper">
-                    <input type="email" name="regEmail" placeholder="e.g., merchant@domain.com" required autocomplete="email">
+                    <input type="email" name="regEmail" placeholder="Enter email address" required autocomplete="email">
                     <i class="fa-regular fa-envelope vector-icon"></i>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="input-label-spec">Merchant Username</label>
+                <label class="input-label-spec">Username</label>
                 <div class="input-wrapper">
-                    <input type="text" name="regUser" placeholder="Unique username sequence" required autocomplete="username">
+                    <input type="text" name="regUser" placeholder="Choose a unique username" required autocomplete="username">
                     <i class="fa-regular fa-user vector-icon"></i>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="input-label-spec">Access Cipher Key</label>
+                <label class="input-label-spec">Enter Password</label>
                 <div class="input-wrapper">
-                    <input type="password" name="regPass" id="cipherInput" placeholder="Password minimum 8 elements" required autocomplete="new-password">
+                    <input type="password" name="regPass" id="cipherInput" placeholder="Minimum 8 characters" required autocomplete="new-password">
                     <i class="fa-solid fa-lock vector-icon"></i>
                     <i class="fa-regular fa-eye toggle-password" id="cipherVisibilityToggle"></i>
                 </div>
-                <!-- Dynamic Script Indicator Blocks -->
                 <div class="password-strength-container">
                     <div class="strength-bar" id="bar1"></div>
                     <div class="strength-bar" id="bar2"></div>
@@ -437,34 +412,37 @@
             </div>
 
             <div class="form-group">
-                <label class="input-label-spec">Demographic Segment</label>
-                <div class="select-container">
-                    <div class="input-wrapper">
-                        <select name="regGender" required>
-                            <option value="" disabled selected>Select Segment Context</option>
-                            <option value="Male">Male Entity</option>
-                            <option value="Female">Female Entity</option>
-                        </select>
-                        <i class="fa-solid fa-venus-mars vector-icon"></i>
-                    </div>
+                <label class="input-label-spec">Confirm Password</label>
+                <div class="input-wrapper">
+                    <input type="password" id="confirmPasswordInput" placeholder="Repeat your chosen password" required autocomplete="new-password">
+                    <i class="fa-solid fa-shield-halved vector-icon"></i>
+                </div>
+                <div class="password-mismatch-error" id="mismatchError">
+                    <i class="fa-solid fa-circle-xmark"></i> Passwords do not match!
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label-spec">Phone Number</label>
+                <div class="input-wrapper">
+                    <input type="tel" name="regPhone" placeholder="Enter your phone number" required autocomplete="tel">
+                    <i class="fa-solid fa-mobile-screen-button vector-icon"></i>
                 </div>
             </div>
             
-            <button type="submit">
-                <span>Deploy Access Protocol</span>
+            <button type="submit" id="submitBtn">
+                <span>Register</span>
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
             </button>
         </form>
 
         <div class="auth-footer">
-            Already configured? <a href="/login">Initialize Session</a>
+            Already registered? <a href="/login">Login</a>
         </div>
     </div>
 
-    <!-- Elite Automation Script Blocks -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Alert Toast Auto-Dismissal Lifecycle
             const toast = document.getElementById('systemToast');
             if (toast) {
                 setTimeout(() => {
@@ -475,7 +453,6 @@
                 }, 4000);
             }
 
-            // 2. Interactive Cipher Visibility Engine
             const togglePass = document.getElementById('cipherVisibilityToggle');
             const passInput = document.getElementById('cipherInput');
 
@@ -486,27 +463,46 @@
                 togglePass.classList.toggle('fa-eye-slash');
             });
 
-            // 3. Dynamic Real-Time Strength Meter Tracker
             const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3')];
             passInput.addEventListener('input', (e) => {
                 const val = e.target.value;
-                
-                // Clear state
                 bars.forEach(b => b.style.background = 'rgba(255, 255, 255, 0.05)');
-                
                 if (val.length === 0) return;
 
                 if (val.length > 0 && val.length < 5) {
-                    bars[0].style.background = '#f87171'; // Weak (Red)
+                    bars[0].style.background = '#f87171';
                 } else if (val.length >= 5 && val.length < 8) {
-                    bars[0].style.background = '#f59e0b'; // Moderate (Gold)
+                    bars[0].style.background = '#f59e0b';
                     bars[1].style.background = '#f59e0b';
                 } else if (val.length >= 8) {
-                    bars[0].style.background = '#a3e61d'; // Strong Node (Lime)
+                    bars[0].style.background = '#a3e61d';
                     bars[1].style.background = '#a3e61d';
                     bars[2].style.background = '#a3e61d';
                 }
+                validatePasswords();
             });
+
+            const confirmInput = document.getElementById('confirmPasswordInput');
+            const mismatchError = document.getElementById('mismatchError');
+            const submitBtn = document.getElementById('submitBtn');
+
+            function validatePasswords() {
+                if (confirmInput.value.length === 0) {
+                    mismatchError.style.display = 'none';
+                    submitBtn.disabled = false;
+                    return;
+                }
+
+                if (passInput.value !== confirmInput.value) {
+                    mismatchError.style.display = 'flex';
+                    submitBtn.disabled = true;
+                } else {
+                    mismatchError.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            }
+
+            confirmInput.addEventListener('input', validatePasswords);
         });
     </script>
 </body>
