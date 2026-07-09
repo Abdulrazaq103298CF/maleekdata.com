@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Core Sign-In — MALEEK’s DATA</title> 
-    <!-- Boxicons & FontAwesome for dual elite framework icon rendering -->
+    <title>Login — MALEEK’s DATA</title> 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -362,13 +361,11 @@
     </style>
 </head>
 <body>
-    <!-- Immersive Spatial Coordinates Layers -->
     <div class="ambient-aurora-top"></div>
     <div class="ambient-aurora-bottom"></div>
 
     <div class="form-container">
         
-        <!-- Alerts Context Shell -->
         <div class="flash-container">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
@@ -382,50 +379,46 @@
             {% endwith %}
         </div>
 
-        <!-- Master Core Brand Panel Header -->
         <div class="brand-header">
             <div class="brand-emblem-frame">
+                <!-- Changed emblem text from L to M -->
                 <span>M</span>
             </div>
-            <h1><span class="primary-accent">MALEEK’s</span> <span class="secondary-accent">DATA</span></h1>
+            <h1><span class="primary-accent">Login</span></h1>
             <p class="subtitle-spec">Authenticate Terminal Gateway</p>
         </div>
 
-        <!-- Gateway Identity Authorization Form -->
-        <form action="/login" method="post" autocomplete="on">
+        <form action="/login" method="post" autocomplete="off">
 
             <div class="input-box">
-                <label class="field-tag-spec">Identity Handle</label>
-                <!-- Matches "Username" exact backend form name context requirement from app.py -->
-                <input type="text" name="Username" placeholder="Enter merchant username" required autocomplete="username">
+                <label class="field-tag-spec">Username, Phone or Email</label>
+                <input type="text" name="Username" placeholder="enter user-details" required autocomplete="off">
                 <i class='bx bxs-user action-vector'></i>
             </div>
 
             <div class="input-box">
-                <label class="field-tag-spec">Secure Cipher Key</label>
-                <!-- Matches "password" exact backend form name context requirement from app.py -->
-                <input type="password" name="password" id="loginCipher" placeholder="Enter session password" required autocomplete="current-password">
+                <label class="field-tag-spec">Password</label>
+                <input type="password" name="password" id="loginCipher" placeholder="enter password" required autocomplete="new-password">
                 <i class="fa-regular fa-eye toggle-password toggle-cipher-view" id="loginCipherToggle"></i>
             </div>
 
             <div class="remember-forget">
                 <label><input type="checkbox" name="remember"> Keep node linked</label>
-                <a href="{{ url_for('forgot_password') }}">Recover Cipher?</a>
+                <a href="{{ url_for('forgot_password') }}">forget password?</a>
             </div>
 
             <button type="submit" class="btn">
-                <span>Initialize Core</span>
+                <span>Login</span>
                 <i class="fa-solid fa-bolt-lightning"></i>
             </button>
 
             <div class="register-link">
-                <p>New operator segment? <a href="{{ url_for('register_page') }}">Deploy Node</a></p>
+                <p>Don’t have an account yet? <a href="{{ url_for('register_page') }}">register</a></p>
             </div>
             
         </form>
     </div>
 
-    <!-- Frontend Functional Automation Core -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // 1. Alert Toast Auto-Dismissal Lifecycle
